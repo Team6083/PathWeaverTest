@@ -7,6 +7,7 @@ import org.team6083.lib.auto.GyroWalker;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.component.DriveBase;
 
 public class oldAutoEngine {
@@ -31,7 +32,7 @@ public class oldAutoEngine {
 
     public static void init() {
         gWalker = new GyroWalker(DriveBase.gyro);
-        eWalker = new EncoderWalker(DriveBase.leftencoder, DriveBase.rightencoder, Mode.Both);
+        eWalker = new EncoderWalker(DriveBase.leftencoder, DriveBase.rightencoder, Mode.Both);//constrution of encoderWalker--focus on "Mode"
         autoTimer = new Timer();
         chooser = new SendableChooser<String>();
 
@@ -114,8 +115,8 @@ public class oldAutoEngine {
     private static void encoderSetting() {
         DriveBase.leftencoder.setReverseDirection(true);
         DriveBase.rightencoder.setReverseDirection(false);
-        DriveBase.leftencoder.setDistancePerPulse(disPerPulse);
-        DriveBase.rightencoder.setDistancePerPulse(disPerPulse);
+        DriveBase.leftencoder.setDistancePerPulse(2 * Math.PI * Units.inchesToMeters(6) / 730);
+        DriveBase.rightencoder.setDistancePerPulse(2 * Math.PI * Units.inchesToMeters(6) / 730);
     }
 
     private static void chooserSetting() {

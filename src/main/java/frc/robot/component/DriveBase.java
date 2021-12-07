@@ -22,10 +22,10 @@ import frc.robot.Robot;
 public class DriveBase {
     //basis drivebase
     public static DifferentialDrive drive;
-    private static WPI_VictorSPX leftMotor1;
-    private static WPI_VictorSPX leftMotor2;
-    private static WPI_VictorSPX rightMotor1;
-    private static WPI_VictorSPX rightMotor2;
+    public static WPI_VictorSPX leftMotor1;
+    public static WPI_VictorSPX leftMotor2;
+    public static WPI_VictorSPX rightMotor1;
+    public static WPI_VictorSPX rightMotor2;
     public static final int Lm1 = 4;
     public static final int Lm2 = 6;
     public static final int Rm1 = 3;
@@ -108,7 +108,7 @@ public class DriveBase {
         drive.directControl(left, right);
     }
 
-    //control current directly, for PathWeaver 
+    //control Voltage directly, for PathWeaver 
     public static void directVoltControl(double left, double right) {
         leftMotor1.setVoltage(left);
         leftMotor1.setVoltage(left);
