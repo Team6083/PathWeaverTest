@@ -4,9 +4,13 @@
 
 package frc.robot;
 
-import org.team6083.lib.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Auto.oldAutoEngine;
+import frc.robot.component.DriveBase;
+import frc.robot.component.Shooting;
+import frc.robot.component.SuckSent;
+import frc.robot.component.VisionTracking;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -15,28 +19,46 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Robot extends TimedRobot {
-  /**
+/**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
- 
+  public static Xbox maincontrol;
+  public static Xbox vicecontrol;
   @Override 
-  public void robotInit() {}
+  public void robotInit() {
+    maincontrol = new Xbox(0);
+    vicecontrol = new Xbox(1);
+    DriveBase.init();
+    Shooting.init();
+    SuckSent.init();
+    VisionTracking.init();
+    oldAutoEngine.init();
+  }
 
   @Override
   public void robotPeriodic() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    oldAutoEngine.start();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    oldAutoEngine.loop();
+  }
 
   @Override
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    DriveBase.teleop();
+    Shooting.teleop();
+    VisionTracking.teleop();
+    SuckSent.teleop();
+  }
 
   @Override
   public void disabledInit() {}
