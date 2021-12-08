@@ -37,7 +37,7 @@ public class VisionTracking {
         Limelight_Tracking();
         
         
-        if (detectIfTrackingFinished()) {
+      if (detectIfTrackingFinished()) {
           LimelightStart = false;
           setCamMode(1);
           setLEDMode(1);

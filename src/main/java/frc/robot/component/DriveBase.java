@@ -21,25 +21,25 @@ import frc.robot.Robot;
 
 public class DriveBase {
     //basis drivebase
-    public static DifferentialDrive drive;
-    public static WPI_VictorSPX leftMotor1;
+    public static DifferentialDrive drive;//use to simpied drivebase program
+    public static WPI_VictorSPX leftMotor1;//define four motor
     public static WPI_VictorSPX leftMotor2;
     public static WPI_VictorSPX rightMotor1;
     public static WPI_VictorSPX rightMotor2;
-    public static final int Lm1 = 4;
+    public static final int Lm1 = 4;//motorControler ID
     public static final int Lm2 = 6;
     public static final int Rm1 = 3;
     public static final int Rm2 = 5;
 
     //for auto pathweaver
-    public static Encoder leftencoder;
+    public static Encoder leftencoder;//to calculate how long we walk, we'll define how long a "1" is below
     public static Encoder rightencoder;
 
     //Gyro: need install Library
-    public static AHRS gyro;
+    public static AHRS gyro;//to detect the current angle, and design which angle we want to match, then calculate to match the goal
 
     //For dashboard
-    protected static DifferentialDriveOdometry odometry;
+    protected static DifferentialDriveOdometry odometry;//use to show path
 
     protected static RamseteController ramseteController = new RamseteController();
     protected static DifferentialDriveKinematics kinematic = new DifferentialDriveKinematics(0.6);
@@ -61,17 +61,17 @@ public class DriveBase {
     protected static PIDController rightPID = new PIDController(kP, kI, kD);
 
     public static void init() {
-        leftMotor1 = new WPI_VictorSPX(Lm1);
+        leftMotor1 = new WPI_VictorSPX(Lm1);//add ID into MotorControler
         leftMotor2 = new WPI_VictorSPX(Lm2);
         rightMotor1 = new WPI_VictorSPX(Rm1);
         rightMotor2 = new WPI_VictorSPX(Rm2);
         
-        leftMotor1.setInverted(true);
+        leftMotor1.setInverted(true);//reverse the direction
         leftMotor2.setInverted(true);
-        rightMotor1.setInverted(true);
+        rightMotor1.setInverted(true);//not sure if to reverse both side is a right way, need to test 
         rightMotor2.setInverted(true);
         
-        drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+        drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);//define which motor we need to use in drivebasse
 
         //set up encoder ID
         leftencoder = new Encoder(0, 1);
@@ -83,7 +83,7 @@ public class DriveBase {
         leftencoder.setReverseDirection(true);//original: right+left-~right+left+   
 
         //define gryo ID
-        gyro = new AHRS(SPI.Port.kMXP);
+        gyro = new AHRS(SPI.Port.kMXP);//gyro need to add class in order to fit to our library, which means that it need a extre function to keep it work and Override it
         gyro.reset();
 
         //For smartDashboard to take number and path which call back from pathWeaver
@@ -95,26 +95,26 @@ public class DriveBase {
 
     //normal drivebase
     public static void teleop() {
-            drive.tankDrive(Robot.maincontrol);
+            drive.tankDrive(Robot.maincontrol);//the "tank Drive" allow driver to control drivebase motors with two Asix, left YAsix and right YAxis, which are relate to different side of the motors. Then, the output of the motor is base on the Axis's number
     }
 
     //This is for Limelight Visiontracking
     public static void track(double speed, double rotation, boolean input) {
-        drive.arcadeDrive(speed, rotation, input);
+        drive.arcadeDrive(speed, rotation, input);//the "arcadeDrive" allow System to control a particular motor to change its speed, rotation(which relate to circulation or to move like a circle). This will be use in Limelight tracking, cause that Limelight will return two number which are calculated by PIDcontoller, and one of them is use to control speed while the other is uset o control rotation
     }
 
     //for some strange function, highly point to some special operate
     public static void directControl(double left, double right) {
-        drive.directControl(left, right);
-    }
+        drive.directControl(left, right);//the "directControl" is a easy way to control drivebase, we usually use it when there is a GyroWalker or EncoderWalker. To use directControl, we need tow number which are use to control both side. For instance, the EncoderWalker will output two number in order to control the motor of right and left.
+    }//also, we can use it to control just only one side, it will be correct if the number is legal.
 
     //control Voltage directly, for PathWeaver 
-    public static void directVoltControl(double left, double right) {
-        leftMotor1.setVoltage(left);
+    public static void directVoltControl(double left, double right) {//the "directVoltControl" is not a particular function but a name we give to it, which can control the motor "Voltage"(12V,11V.5V)
+        leftMotor1.setVoltage(left);//mix:12
         leftMotor1.setVoltage(left);
         rightMotor1.setVoltage(right);
         rightMotor2.setVoltage(right);
-        drive.feed();
+        drive.feed();//feed the number into drivebase
     }
 
     //Use to run Trajectory(path)
