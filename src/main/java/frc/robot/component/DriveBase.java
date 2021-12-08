@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Robot;
 
-public class DriveBase {
+public class drivebase {
     //basis drivebase
     public static DifferentialDrive drive;//use to simpied drivebase program
     public static WPI_VictorSPX leftMotor1;//define four motor
@@ -168,4 +168,5 @@ public class DriveBase {
         leftPID.setPID(kP, kI, kD);
         rightPID.setPID(kP, kI, kD);
     }
+    
 }
