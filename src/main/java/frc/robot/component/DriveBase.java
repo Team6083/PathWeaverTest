@@ -111,7 +111,7 @@ public class DriveBase {
     //control Voltage directly, for PathWeaver 
     public static void directVoltControl(double left, double right) {//the "directVoltControl" is not a particular function but a name we give to it, which can control the motor "Voltage"(12V,11V.5V)
         leftMotor1.setVoltage(left);//mix:12
-        leftMotor1.setVoltage(left);
+        leftMotor2.setVoltage(left);
         rightMotor1.setVoltage(right);
         rightMotor2.setVoltage(right);
         drive.feed();//feed the number into drivebase

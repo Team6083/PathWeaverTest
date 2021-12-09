@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Auto.eWalker;
 import frc.robot.Auto.oldAutoEngine;
 import frc.robot.component.DriveBase;
 import frc.robot.component.Shooting;

@@ -17,7 +17,7 @@ public class SuckSent {
 
     private static AnalogInput analogInput;
     private static double distanceWantBallToMove = 4000;// this variable need to be tune
-    private static int analogDistance = 100;
+    private static int analogDistance = 100;//the goal we want the senser to get
     private static double shootAmp = 5.1;
 
     private static final int RP = 0;
@@ -29,7 +29,7 @@ public class SuckSent {
     public static void init() {
         RobotPower.init(RP);//Robotpower
 
-        analogInput = new AnalogInput(AI);
+        analogInput = new AnalogInput(AI);//analog senser: distance senser
         suck = new WPI_VictorSPX(SK);
         sent = new TalonSRX(ST);
         power = new RobotPower(PW);
@@ -39,12 +39,11 @@ public class SuckSent {
 
     public static void teleop() {
         if (analogInput.getValue() > analogDistance && !Robot.vicecontrol.getBumper(Hand.kLeft) && !Robot.vicecontrol.getBumper(Hand.kRight)) {
-            sent.getSensorCollection().setQuadraturePosition(0, 100);                
-            sent.set(ControlMode.PercentOutput, 0.3);
+            sent.getSensorCollection().setQuadraturePosition(0, 100);        
+            sent.set(ControlMode.PercentOutput, 0.3);//in order to fit the goal, "sent" need to move
         }
         
-        if (sent.getSensorCollection().getQuadraturePosition() >= distanceWantBallToMove && !Robot.vicecontrol.getBumper(Hand.kRight)
-                && !Robot.vicecontrol.getBumper(Hand.kLeft)) {
+        if (sent.getSensorCollection().getQuadraturePosition() >= distanceWantBallToMove && !Robot.vicecontrol.getBumper(Hand.kRight)&& !Robot.vicecontrol.getBumper(Hand.kLeft)) {
             sent.set(ControlMode.PercentOutput, 0);
         }
 
