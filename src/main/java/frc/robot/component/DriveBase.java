@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -19,7 +20,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Robot;
 
-public class drivebase {
+public class DriveBase {
     //basis drivebase
     public static DifferentialDrive drive;//use to simpied drivebase program
     public static WPI_VictorSPX leftMotor1;//define four motor
@@ -167,6 +168,9 @@ public class drivebase {
 
         leftPID.setPID(kP, kI, kD);
         rightPID.setPID(kP, kI, kD);
+    }
+
+    public static void setODOPose(Pose2d pose) {
     }
     
 }

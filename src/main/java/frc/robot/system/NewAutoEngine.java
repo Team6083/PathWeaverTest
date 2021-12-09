@@ -1,4 +1,4 @@
-// package frc.robot.system;
+package frc.robot.system;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import frc.robot.component.drivebase;
+import frc.robot.component.DriveBase;
 // import frc.robot.component.shoot;
 
 public class NewAutoEngine {
@@ -53,13 +53,13 @@ public class NewAutoEngine {
 
       var pose = trajectory[i].getInitialPose();
 
-      drivebase.setODOPose(pose);
+      DriveBase.setODOPose(pose);
     }
   }
 
   public static void start() {
-    drivebase.resetFilters();
-    drivebase.resetPIDs();
+    DriveBase.resetFilters();
+    DriveBase.resetPIDs();
     autoSelected = chooser.getSelected();
 
     timer.reset();
@@ -67,7 +67,7 @@ public class NewAutoEngine {
   }
 
   public static void loop() {
-    drivebase.updateODO();
+    DriveBase.updateODO();
 
     switch (autoSelected) {
     case Test:
@@ -100,7 +100,7 @@ public class NewAutoEngine {
   public static void DoTest(){
     switch (currentStep) {
         case 1:
-          drivebase.runTraj(trajectory[GroupCenter[0]], timer.get());
+          DriveBase.runTraj(trajectory[GroupCenter[0]], timer.get());
           if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
             currentStep++;
             timer.reset();
@@ -108,7 +108,7 @@ public class NewAutoEngine {
           }
           break;
         case 2:
-          drivebase.runTraj(trajectory[GroupCenter[1]], timer.get());
+          DriveBase.runTraj(trajectory[GroupCenter[1]], timer.get());
           if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
             currentStep++;
             timer.reset();
@@ -120,7 +120,7 @@ public class NewAutoEngine {
   public static void DoCenter() {
     switch (currentStep) {
     case 1:
-      drivebase.runTraj(trajectory[GroupCenter[0]], timer.get());
+      DriveBase.runTraj(trajectory[GroupCenter[0]], timer.get());
       if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
         currentStep++;
         timer.reset();
@@ -128,7 +128,7 @@ public class NewAutoEngine {
       }
       break;
     case 2:
-      drivebase.runTraj(trajectory[GroupCenter[1]], timer.get());
+      DriveBase.runTraj(trajectory[GroupCenter[1]], timer.get());
       if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
         currentStep++;
         timer.reset();
@@ -136,7 +136,7 @@ public class NewAutoEngine {
       }
       break;
     case 3:
-      drivebase.runTraj(trajectory[GroupCenter[2]], timer.get());
+      DriveBase.runTraj(trajectory[GroupCenter[2]], timer.get());
       if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
         currentStep++;
         timer.reset();
@@ -149,7 +149,7 @@ public class NewAutoEngine {
   public static void DoCenter2() {
     switch(currentStep){
     case 1:
-    drivebase.runTraj(trajectory[GroupCenter2[0]], timer.get());
+    DriveBase.runTraj(trajectory[GroupCenter2[0]], timer.get());
     if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
     currentStep++;
     timer.reset();
@@ -157,7 +157,7 @@ public class NewAutoEngine {
     }
     break;
     case 2:
-    drivebase.runTraj(trajectory[GroupCenter2[1]], timer.get());
+    DriveBase.runTraj(trajectory[GroupCenter2[1]], timer.get());
     if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
     currentStep++;
     timer.reset();
@@ -171,7 +171,7 @@ public class NewAutoEngine {
   public static void DoTakeball1() {
       switch(currentStep){
       case 1:
-      drivebase.runTraj(trajectory[GroupTakeball1[0]], timer.get());
+      DriveBase.runTraj(trajectory[GroupTakeball1[0]], timer.get());
       if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
       currentStep++;
       timer.reset();
@@ -179,7 +179,7 @@ public class NewAutoEngine {
       }
       break;
       case 2:
-      drivebase.runTraj(trajectory[GroupTakeball1[1]], timer.get());
+      DriveBase.runTraj(trajectory[GroupTakeball1[1]], timer.get());
       if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
       currentStep++;
       timer.reset();
@@ -188,3 +188,4 @@ public class NewAutoEngine {
       break;
       }
     }
+  }
