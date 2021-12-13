@@ -171,6 +171,7 @@ public class DriveBase {
     }
 
     public static void setODOPose(Pose2d pose) {
+        odometry.resetPosition(pose, pose.getRotation());
+        field.setRobotPose(odometry.getPoseMeters());
     }
-    
 }
