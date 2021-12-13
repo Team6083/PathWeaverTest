@@ -53,7 +53,7 @@ public class NewAutoEngine {
 
       var pose = trajectory[i].getInitialPose();
 
-      DriveBase.setODOPose(pose);//This function hasn't define
+      DriveBase.setODOPose(pose);//This function has define
     }
   }
 
