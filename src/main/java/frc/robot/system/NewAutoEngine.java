@@ -81,6 +81,7 @@ public class NewAutoEngine {
       break;
     case Takeball1:
       DoTakeball1();
+      break;
     // case kDoNothing:
     //   drivebase.directControl(0, 0);
     //   shoot.shootingTarget();
@@ -88,7 +89,7 @@ public class NewAutoEngine {
     }
   }
 
-  private static void chooserSetting() {
+  private static void chooserSetting() {  //把他丟上Dashboard的樣子
     chooser.setDefaultOption("Do Nothing", kDoNothing);
     chooser.addOption("Center", Center);
     chooser.addOption("Center2", Center2);
