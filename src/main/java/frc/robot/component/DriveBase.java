@@ -8,6 +8,7 @@ import org.team6083.lib.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -23,14 +24,16 @@ import frc.robot.Robot;
 public class DriveBase {
     //basis drivebase
     public static DifferentialDrive drive;//use to simpied drivebase program
-    public static WPI_VictorSPX leftMotor1;//define four motor
-    public static WPI_VictorSPX leftMotor2;
-    public static WPI_VictorSPX rightMotor1;
-    public static WPI_VictorSPX rightMotor2;
+    public static VictorSP leftMotor1;//define four motor
+    public static VictorSP leftMotor2;
+    public static VictorSP rightMotor1;
+    public static VictorSP rightMotor2;
     public static final int Lm1 = 4;//motorControler ID
     public static final int Lm2 = 6;
     public static final int Rm1 = 3;
     public static final int Rm2 = 5;
+    public static final int left = 1;
+    public static final int right = 0;
 
     //for auto pathweaver
     public static Encoder leftencoder;//to calculate how long we walk, we'll define how long a "1" is below
@@ -62,17 +65,17 @@ public class DriveBase {
     protected static PIDController rightPID = new PIDController(kP, kI, kD);
 
     public static void init() {
-        leftMotor1 = new WPI_VictorSPX(Lm1);//add ID into MotorControler
-        leftMotor2 = new WPI_VictorSPX(Lm2);
-        rightMotor1 = new WPI_VictorSPX(Rm1);
-        rightMotor2 = new WPI_VictorSPX(Rm2);
+        leftMotor1 = new VictorSP(left);//add ID into MotorControler
+        //leftMotor2 = new WPI_VictorSPX(Lm2);
+        rightMotor1 = new VictorSP(right);
+        //rightMotor2 = new WPI_VictorSPX(Rm2);
         
-        leftMotor1.setInverted(true);//reverse the direction
-        leftMotor2.setInverted(true);
-        rightMotor1.setInverted(true);//not sure if to reverse both side is a right way, need to test 
-        rightMotor2.setInverted(true);
+        //leftMotor1.setInverted(true);//reverse the direction
+        //leftMotor2.setInverted(true);
+       // rightMotor1.setInverted(true);//not sure if to reverse both side is a right way, need to test 
+        //rightMotor2.setInverted(true);
         
-        drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);//define which motor we need to use in drivebasse
+        drive = new DifferentialDrive(leftMotor1, leftMotor1, rightMotor1, rightMotor1);//define which motor we need to use in drivebasse
 
         //set up encoder ID
         leftencoder = new Encoder(0, 1);
