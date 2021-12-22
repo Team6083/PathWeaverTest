@@ -12,6 +12,7 @@ import frc.robot.component.DriveBase;
 import frc.robot.component.Shooting;
 import frc.robot.component.SuckSent;
 import frc.robot.component.VisionTracking;
+import frc.robot.system.NewAutoEngine;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,10 +32,6 @@ public class Robot extends TimedRobot {
     maincontrol = new Xbox(0);
     vicecontrol = new Xbox(1);
     DriveBase.init();
-    Shooting.init();
-    SuckSent.init();
-    VisionTracking.init();
-    oldAutoEngine.init();
   }
 
   @Override
@@ -42,12 +39,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    oldAutoEngine.start();
+    NewAutoEngine.init();
+    NewAutoEngine.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    oldAutoEngine.loop();
+    NewAutoEngine.loop();
   }
 
   @Override
@@ -56,9 +54,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     DriveBase.teleop();
-    Shooting.teleop();
-    VisionTracking.teleop();
-    SuckSent.teleop();
   }
 
   @Override
