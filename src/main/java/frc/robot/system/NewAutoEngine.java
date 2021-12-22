@@ -16,16 +16,9 @@ import frc.robot.component.DriveBase;
 public class NewAutoEngine {
 
   static int currentStep = 0;
-  static int trajectoryAmount =10;
-  static int[] GroupCenter = { 1, 3, 4 };
-  static int[] GroupCenter2 = { 2, 3 };
-  static int[] GroupTakeball1 = { 8, 9 };
-  static int[] Unname = { 6, 7 };
-  static int[] test ={ 10 , 11 };
-  static String[] trajectoryJSON = { "output/output/center1.wpilib.json", "output/output/center2-1.wpilib.json",
-      "output/output/center2-2.wpilib.json", "output/output/center3.wpilib.json", "output/output/port1.wpilib.json",
-      "output/output/port2.wpilib.json", "output/output/takeball1.wpilib.json", "output/output/takeball2.wpilib.json","output/output.test1.wpilib.json"
-      ,"output/output.test2.wpilib.json" };
+  static int trajectoryAmount =2;
+  static int[] test ={ 0 , 1 };
+  static String[] trajectoryJSON = { "output/output.test1.wpilib.json","output/output.test2.wpilib.json" };
   static Trajectory[] trajectory = new Trajectory[trajectoryAmount + 1];
 
   protected static Timer timer = new Timer();
@@ -72,16 +65,7 @@ public class NewAutoEngine {
     switch (autoSelected) {
     case Test:
       DoTest();
-      break;
-    case Center:
-      DoCenter();
-      break;
-    case Center2:
-      DoCenter2();
-      break;
-    case Takeball1:
-      DoTakeball1();
-      break;
+      break; 
     // case kDoNothing:
     //   drivebase.directControl(0, 0);
     //   shoot.shootingTarget();
@@ -101,7 +85,7 @@ public class NewAutoEngine {
   public static void DoTest(){
     switch (currentStep) {
         case 1:
-          DriveBase.runTraj(trajectory[GroupCenter[0]], timer.get());
+          DriveBase.runTraj(trajectory[test[0]], timer.get());
           if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
             currentStep++;
             timer.reset();
@@ -109,7 +93,7 @@ public class NewAutoEngine {
           }
           break;
         case 2:
-          DriveBase.runTraj(trajectory[GroupCenter[1]], timer.get());
+          DriveBase.runTraj(trajectory[test[1]], timer.get());
           if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
             currentStep++;
             timer.reset();
@@ -118,75 +102,4 @@ public class NewAutoEngine {
           break;
   }
 }
-  public static void DoCenter() {
-    switch (currentStep) {
-    case 1:
-      DriveBase.runTraj(trajectory[GroupCenter[0]], timer.get());
-      if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-        currentStep++;
-        timer.reset();
-        timer.start();
-      }
-      break;
-    case 2:
-      DriveBase.runTraj(trajectory[GroupCenter[1]], timer.get());
-      if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-        currentStep++;
-        timer.reset();
-        timer.start();
-      }
-      break;
-    case 3:
-      DriveBase.runTraj(trajectory[GroupCenter[2]], timer.get());
-      if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-        currentStep++;
-        timer.reset();
-        timer.start();
-      }
-      break;
-    }
-  }
-
-  public static void DoCenter2() {
-    switch(currentStep){
-    case 1:
-    DriveBase.runTraj(trajectory[GroupCenter2[0]], timer.get());
-    if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-    currentStep++;
-    timer.reset();
-    timer.start();
-    }
-    break;
-    case 2:
-    DriveBase.runTraj(trajectory[GroupCenter2[1]], timer.get());
-    if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-    currentStep++;
-    timer.reset();
-    timer.start();
-    }
-    break;
-    }
-    }
-  
-
-  public static void DoTakeball1() {
-      switch(currentStep){
-      case 1:
-      DriveBase.runTraj(trajectory[GroupTakeball1[0]], timer.get());
-      if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-      currentStep++;
-      timer.reset();
-      timer.start();
-      }
-      break;
-      case 2:
-      DriveBase.runTraj(trajectory[GroupTakeball1[1]], timer.get());
-      if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-      currentStep++;
-      timer.reset();
-      timer.start();
-      }
-      break;
-      }
-    }
-  }
+}
