@@ -31,6 +31,8 @@ public class DriveBase {
     public static final int Lm2 = 6;
     public static final int Rm1 = 3;
     public static final int Rm2 = 5;
+    public static final int left = 1;
+    public static final int right = 0;
 
     //for auto pathweaver
     public static Encoder leftencoder;//to calculate how long we walk, we'll define how long a "1" is below
@@ -63,9 +65,9 @@ public class DriveBase {
 
     public static void init() {
         leftMotor1 = new WPI_VictorSPX(Lm1);//add ID into MotorControler
-        leftMotor2 = new WPI_VictorSPX(Lm2);
+        //leftMotor2 = new WPI_VictorSPX(Lm2);
         rightMotor1 = new WPI_VictorSPX(Rm1);
-        rightMotor2 = new WPI_VictorSPX(Rm2);
+        //rightMotor2 = new WPI_VictorSPX(Rm2);
         
         leftMotor1.setInverted(true);//reverse the direction
         leftMotor2.setInverted(true);
