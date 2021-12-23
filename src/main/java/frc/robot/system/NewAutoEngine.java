@@ -11,26 +11,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.component.DriveBase;
-// import frc.robot.component.shoot;
 
 public class NewAutoEngine {
 
-  static int currentStep = 0;
+  static int currentStep = 1;
   static int trajectoryAmount =2;
   static int[] test ={ 0 , 1 };
-  static String[] trajectoryJSON = { "output/output.test1.wpilib.json","output/output.test2.wpilib.json" };
-  static Trajectory[] trajectory = new Trajectory[trajectoryAmount + 1];
+  static String[] trajectoryJSON = { "/home/lvuser/deploy/stright1.wpilib.json","/home/lvuser/deploy/stright2.wpilib.json"};
+  static Trajectory[] trajectory = new Trajectory[trajectoryAmount];
 
   protected static Timer timer = new Timer();
   protected static SendableChooser<String> chooser;
   protected static String autoSelected;
   protected static final String Test ="Test";
   protected static final String kDoNothing = "Do Nothing";
-  protected static final String Center = "Center";
-  protected static final String Center2 = "Center2";
-  protected static final String Takeball1 = "Takeball1";
-  protected static final String unname = "Unname";
-  protected static final String FirstGame = "First Game";
+
 
   public static void init() {
     chooser = new SendableChooser<String>();
@@ -66,21 +61,16 @@ public class NewAutoEngine {
     case Test:
       DoTest();
       break; 
-    // case kDoNothing:
-    //   drivebase.directControl(0, 0);
-    //   shoot.shootingTarget();
-    //   break;
+    case kDoNothing:
+      DriveBase.directControl(0, 0);
+      break;
     }
   }
 
   private static void chooserSetting() {  //把他丟上Dashboard的樣子
-    chooser.setDefaultOption("Do Nothing", kDoNothing);
-    chooser.addOption("Center", Center);
-    chooser.addOption("Center2", Center2);
-    chooser.addOption("Takeball1", Takeball1);
-    chooser.addOption("First Game", FirstGame);
-    chooser.addOption("test", Test);
     SmartDashboard.putData("Auto Choice", chooser);
+    chooser.setDefaultOption("Do Nothing", kDoNothing);
+    chooser.addOption("test", Test);
   }
   public static void DoTest(){
     switch (currentStep) {

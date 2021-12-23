@@ -8,6 +8,8 @@ import org.team6083.lib.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -64,11 +66,18 @@ public class DriveBase {
     protected static PIDController leftPID = new PIDController(kP, kI, kD);
     protected static PIDController rightPID = new PIDController(kP, kI, kD);
 
+    public static SpeedController leftmotor;
+    public static SpeedController rightmotor;
+
     public static void init() {
         leftMotor1 = new VictorSP(left);//add ID into MotorControler
         //leftMotor2 = new WPI_VictorSPX(Lm2);
         rightMotor1 = new VictorSP(right);
         //rightMotor2 = new WPI_VictorSPX(Rm2);
+
+        leftmotor = new SpeedControllerGroup(leftMotor1, leftMotor1);
+        rightmotor = new SpeedControllerGroup(rightMotor1, rightMotor1);
+
         
         //leftMotor1.setInverted(true);//reverse the direction
         //leftMotor2.setInverted(true);
@@ -99,7 +108,11 @@ public class DriveBase {
 
     //normal drivebase
     public static void teleop() {
-            drive.tankDrive(Robot.maincontrol);//the "tank Drive" allow driver to control drivebase motors with two Asix, left YAsix and right YAxis, which are relate to different side of the motors. Then, the output of the motor is base on the Axis's number
+        if(Robot.maincontrol.getYButton()){
+            DriveBase.directVoltControl(11, 11);
+        }   
+        drive.tankDrive(Robot.maincontrol);//the "tank Drive" allow driver to control drivebase motors with two Asix, left YAsix and right YAxis, which are relate to different side of the motors. Then, the output of the motor is base on the Axis's number
+        
     }
 
     //This is for Limelight Visiontracking
@@ -114,10 +127,10 @@ public class DriveBase {
 
     //control Voltage directly, for PathWeaver 
     public static void directVoltControl(double left, double right) {//the "directVoltControl" is not a particular function but a name we give to it, which can control the motor "Voltage"(12V,11V.5V)
-        leftMotor1.setVoltage(left);//mix:12
-        leftMotor2.setVoltage(left);
-        rightMotor1.setVoltage(right);
-        rightMotor2.setVoltage(right);
+        leftmotor.setVoltage(left);//mix:12
+        //leftMotor2.setVoltage(left);
+        rightmotor.setVoltage(right);
+       // rightMotor2.setVoltage(right);
         drive.feed();//feed the number into drivebase
     }
 
