@@ -141,8 +141,8 @@ public class DriveBase {
 
         var chaspeed = ramseteController.calculate(odometry.getPoseMeters(), goal);
 
-        var wheelSpeeds = kinematic.toWheelSpeeds(chaspeed); // 左右速度
-        double left = wheelSpeeds.leftMetersPerSecond; // 從wheelSpeeds抓速度 (ctrl+滑鼠左鍵)
+        var wheelSpeeds = kinematic.toWheelSpeeds(chaspeed); // left right speed
+        double left = wheelSpeeds.leftMetersPerSecond; // catch sppe from wheelSpeed(with ctrl+left mice)
         double right = wheelSpeeds.rightMetersPerSecond;
 
         leftPID.setSetpoint(left);

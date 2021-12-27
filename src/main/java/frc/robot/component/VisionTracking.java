@@ -125,7 +125,7 @@ public class VisionTracking {
   }
 
   /**
-   * The pipeline’s latency contribution (ms) Add at least 11ms for image capture
+   * The pipeline's latency contribution (ms) Add at least 11ms for image capture
    * latency.
    */
   public static double getLatencyContribution() {

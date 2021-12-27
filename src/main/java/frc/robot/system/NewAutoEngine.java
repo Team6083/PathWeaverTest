@@ -17,7 +17,7 @@ public class NewAutoEngine {
   static int currentStep = 1;
   static int trajectoryAmount =2;
   static int[] test ={ 0 , 1 };
-  static String[] trajectoryJSON = { "/home/lvuser/deploy/stright1.wpilib.json","/home/lvuser/deploy/stright2.wpilib.json"};
+  static String[] trajectoryJSON = { "/home/lvuser/deploy/one.wpilib.json","/home/lvuser/deploy/one.wpilib.json"};
   static Trajectory[] trajectory = new Trajectory[trajectoryAmount];
 
   protected static Timer timer = new Timer();
@@ -67,10 +67,10 @@ public class NewAutoEngine {
     }
   }
 
-  private static void chooserSetting() {  //把他丟上Dashboard的樣子
-    SmartDashboard.putData("Auto Choice", chooser);
+  private static void chooserSetting() { 
     chooser.setDefaultOption("Do Nothing", kDoNothing);
     chooser.addOption("test", Test);
+    SmartDashboard.putData("Auto Choice", chooser);
   }
   public static void DoTest(){
     switch (currentStep) {
