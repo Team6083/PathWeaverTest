@@ -73,9 +73,6 @@ public class DriveBase {
         rightMotor1 = new VictorSP(Rm1);
         rightMotor2 = new VictorSP(Rm2);
 
-        leftmotor = new SpeedControllerGroup(leftMotor1, leftMotor1);
-        rightmotor = new SpeedControllerGroup(rightMotor1, rightMotor1);
-
         
         //leftMotor1.setInverted(true);//reverse the direction
         //leftMotor2.setInverted(true);
@@ -87,6 +84,8 @@ public class DriveBase {
         //set up encoder ID
         leftencoder = new Encoder(6, 7);
         rightencoder = new Encoder(8, 9);
+        leftencoder.reset();
+        rightencoder.reset();
 
         //set up encoder distance: "2*PI*Units.inchesToMeters(wheel inch)/730(two circulation)"
         leftencoder.setDistancePerPulse(2 * Math.PI * Units.inchesToMeters(6) / 730); // 365*2
@@ -106,6 +105,7 @@ public class DriveBase {
 
     //normal drivebase
     public static void teleop() {
+        putDashboard();
         drive.tankDrive(Robot.maincontrol);//the "tank Drive" allow driver to control drivebase motors with two Asix, left YAsix and right YAxis, which are relate to different side of the motors. Then, the output of the motor is base on the Axis's number
     }
 
@@ -183,5 +183,10 @@ public class DriveBase {
     public static void setODOPose(Pose2d pose) {
         odometry.resetPosition(pose, pose.getRotation());
         field.setRobotPose(odometry.getPoseMeters());
+    }
+
+    public static void putDashboard(){
+        SmartDashboard.putNumber("LeftEncoder", leftencoder.get());
+        SmartDashboard.putNumber("RightEncoder", rightencoder.get());
     }
 }

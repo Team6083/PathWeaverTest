@@ -6,13 +6,12 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.Auto.eWalker;
-import frc.robot.Auto.oldAutoEngine;
 import frc.robot.component.DriveBase;
 import frc.robot.component.Shooting;
 import frc.robot.component.SuckSent;
 import frc.robot.component.VisionTracking;
 import frc.robot.system.NewAutoEngine;
+import frc.robot.system.TestEngine;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,13 +39,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    NewAutoEngine.init();
-    NewAutoEngine.start();
+    //NewAutoEngine.init();
+    TestEngine.init();
   }
 
   @Override
   public void autonomousPeriodic() {
-    NewAutoEngine.loop();
+    //NewAutoEngine.start();
+    //NewAutoEngine.loop();
+   TestEngine.loop();
   }
 
   @Override
