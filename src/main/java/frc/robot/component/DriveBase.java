@@ -30,12 +30,10 @@ public class DriveBase {
     public static VictorSP leftMotor2;
     public static VictorSP rightMotor1;
     public static VictorSP rightMotor2;
-    public static final int Lm1 = 4;//motorControler ID
-    public static final int Lm2 = 6;
-    public static final int Rm1 = 3;
-    public static final int Rm2 = 5;
-    public static final int left = 1;
-    public static final int right = 0;
+    public static final int Lm1 = 3;//motorControler ID
+    public static final int Lm2 = 1;
+    public static final int Rm1 = 5;
+    public static final int Rm2 = 0;
 
     //for auto pathweaver
     public static Encoder leftencoder;//to calculate how long we walk, we'll define how long a "1" is below
@@ -70,10 +68,10 @@ public class DriveBase {
     public static SpeedController rightmotor;
 
     public static void init() {
-        leftMotor1 = new VictorSP(left);//add ID into MotorControler
-        //leftMotor2 = new WPI_VictorSPX(Lm2);
-        rightMotor1 = new VictorSP(right);
-        //rightMotor2 = new WPI_VictorSPX(Rm2);
+        leftMotor1 = new VictorSP(Lm1);//add ID into MotorControler
+        leftMotor2 = new VictorSP(Lm2);
+        rightMotor1 = new VictorSP(Rm1);
+        rightMotor2 = new VictorSP(Rm2);
 
         leftmotor = new SpeedControllerGroup(leftMotor1, leftMotor1);
         rightmotor = new SpeedControllerGroup(rightMotor1, rightMotor1);
@@ -84,11 +82,11 @@ public class DriveBase {
        // rightMotor1.setInverted(true);//not sure if to reverse both side is a right way, need to test 
         //rightMotor2.setInverted(true);
         
-        drive = new DifferentialDrive(leftMotor1, leftMotor1, rightMotor1, rightMotor1);//define which motor we need to use in drivebasse
+        drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);//define which motor we need to use in drivebasse
 
         //set up encoder ID
-        leftencoder = new Encoder(0, 1);
-        rightencoder = new Encoder(2, 3);
+        leftencoder = new Encoder(6, 7);
+        rightencoder = new Encoder(8, 9);
 
         //set up encoder distance: "2*PI*Units.inchesToMeters(wheel inch)/730(two circulation)"
         leftencoder.setDistancePerPulse(2 * Math.PI * Units.inchesToMeters(6) / 730); // 365*2
@@ -108,11 +106,7 @@ public class DriveBase {
 
     //normal drivebase
     public static void teleop() {
-        if(Robot.maincontrol.getYButton()){
-            DriveBase.directVoltControl(11, 11);
-        }   
         drive.tankDrive(Robot.maincontrol);//the "tank Drive" allow driver to control drivebase motors with two Asix, left YAsix and right YAxis, which are relate to different side of the motors. Then, the output of the motor is base on the Axis's number
-        
     }
 
     //This is for Limelight Visiontracking
@@ -128,9 +122,9 @@ public class DriveBase {
     //control Voltage directly, for PathWeaver 
     public static void directVoltControl(double left, double right) {//the "directVoltControl" is not a particular function but a name we give to it, which can control the motor "Voltage"(12V,11V.5V)
         leftmotor.setVoltage(left);//mix:12
-        //leftMotor2.setVoltage(left);
+        leftMotor2.setVoltage(left);
         rightmotor.setVoltage(right);
-       // rightMotor2.setVoltage(right);
+        rightMotor2.setVoltage(right);
         drive.feed();//feed the number into drivebase
     }
 
