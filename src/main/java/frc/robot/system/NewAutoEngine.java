@@ -17,7 +17,7 @@ public class NewAutoEngine {
   static int currentStep = 1;
   static int trajectoryAmount =2;
   static int[] test ={ 0 , 1 };
-  static String[] trajectoryJSON = { "/home/lvuser/deploy/one.wpilib.json","/home/lvuser/deploy/one.wpilib.json"};
+  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/one.wpilib.json","/home/lvuser/deploy/output/one.wpilib.json"};
   static Trajectory[] trajectory = new Trajectory[trajectoryAmount];
 
   protected static Timer timer = new Timer();

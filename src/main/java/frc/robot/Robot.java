@@ -39,15 +39,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //NewAutoEngine.init();
-    TestEngine.init();
+    NewAutoEngine.init();
+    //TestEngine.init();
   }
 
   @Override
   public void autonomousPeriodic() {
-    //NewAutoEngine.start();
-    //NewAutoEngine.loop();
-   TestEngine.loop();
+    NewAutoEngine.start();
+    NewAutoEngine.loop();
+   //TestEngine.loop();
   }
 
   @Override

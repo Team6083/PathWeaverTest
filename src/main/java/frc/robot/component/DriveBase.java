@@ -105,6 +105,8 @@ public class DriveBase {
 
     //normal drivebase
     public static void teleop() {
+        leftencoder.get();
+        rightencoder.get();
         putDashboard();
         drive.tankDrive(Robot.maincontrol);//the "tank Drive" allow driver to control drivebase motors with two Asix, left YAsix and right YAxis, which are relate to different side of the motors. Then, the output of the motor is base on the Axis's number
     }
