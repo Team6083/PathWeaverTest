@@ -7,9 +7,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.component.DriveBase;
-import frc.robot.component.Shooting;
-import frc.robot.component.SuckSent;
-import frc.robot.component.VisionTracking;
 import frc.robot.system.NewAutoEngine;
 import frc.robot.system.TestEngine;
 
