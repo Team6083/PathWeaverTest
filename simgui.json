@@ -1,26 +1,47 @@
 {
   "HALProvider": {
-    "RoboRIO": {
-      "RoboRIO Input": {
-        "open": true
+    "Encoders": {
+      "0": {
+        "header": {
+          "open": true
+        }
+      },
+      "1": {
+        "header": {
+          "open": true
+        }
       },
       "window": {
         "visible": true
+      }
+    },
+    "Other Devices": {
+      "navX-Sensor[0]": {
+        "header": {
+          "open": true
+        }
       }
     }
   },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/SmartDashboard/Auto Choice": "String Chooser",
+      "/SmartDashboard/Auto choose": "String Chooser",
       "/SmartDashboard/field": "Field2d",
       "/SmartDashboard/trajField": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Auto Choice": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Auto choose": {
         "window": {
           "visible": true
         }
@@ -38,14 +59,7 @@
     }
   },
   "NetworkTables": {
-    "LiveWindow": {
-      "open": true
-    },
     "SmartDashboard": {
-      "field": {
-        "open": true
-      },
-      "open": true,
       "trajField": {
         "open": true
       }

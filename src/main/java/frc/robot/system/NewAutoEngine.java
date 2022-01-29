@@ -14,19 +14,21 @@ import frc.robot.component.DriveBase;
 
 public class NewAutoEngine {
 
-  static int currentStep = 1;
-  static int trajectoryAmount =2;
-  static int[] test ={ 0 , 1 };
-  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/test1.wpilib.json","/home/lvuser/deploy/output/test2.wpilib.json"};
-  static String[] trajectorySIM = {"C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\test1.wpilib.json","C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\test2.wpilib.json"};
+  static int currentStep = 0;
+  static int trajectoryAmount = 2;
+  static int[] test = { 0, 1 };
+  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/test1.wpilib.json",
+      "/home/lvuser/deploy/output/test2.wpilib.json" };
+  static String[] trajectorySIM = {
+      "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\test1.wpilib.json",
+      "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\test2.wpilib.json" };
   static Trajectory[] trajectory = new Trajectory[trajectoryAmount];
 
   protected static Timer timer = new Timer();
   protected static SendableChooser<String> chooser;
   protected static String autoSelected;
-  protected static final String Test ="Test";
+  protected static final String Test = "Test";
   protected static final String kDoNothing = "Do Nothing";
-
 
   public static void init() {
     chooser = new SendableChooser<String>();
@@ -42,7 +44,7 @@ public class NewAutoEngine {
 
       var pose = trajectory[i].getInitialPose();
 
-      DriveBase.setODOPose(pose);//This function has define
+      DriveBase.setODOPose(pose);// This function has define
     }
   }
 
@@ -59,38 +61,41 @@ public class NewAutoEngine {
     DriveBase.updateODO();
 
     switch (autoSelected) {
-    case Test:
-      DoTest();
-      break; 
-    case kDoNothing:
-      DriveBase.directControl(0, 0);
-      break;
+      case Test:
+        DoTest();
+        break;
+      case kDoNothing:
+        DriveBase.directControl(0, 0);
+        break;
     }
   }
 
-  private static void chooserSetting() { 
+  private static void chooserSetting() {
     chooser.setDefaultOption("Do Nothing", kDoNothing);
     chooser.addOption("test", Test);
     SmartDashboard.putData("Auto Choice", chooser);
   }
-  public static void DoTest(){
+
+  public static void DoTest() {
     switch (currentStep) {
-        case 1:
-          DriveBase.runTraj(trajectory[test[0]], timer.get());
-          if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-            currentStep++;
-            timer.reset();
-            timer.start();
-          }
-          break;
-        case 2:
-          DriveBase.runTraj(trajectory[test[1]], timer.get());
-          if (timer.get() > trajectory[currentStep].getTotalTimeSeconds()) {
-            currentStep++;
-            timer.reset();
-            timer.start();
-          }
-          break;
+      case 0:
+        DriveBase.runTraj(trajectory[test[0]], timer.get());
+        if (timer.get() > trajectory[test[0]].getTotalTimeSeconds()) {
+          currentStep++;
+          timer.reset();
+          timer.start();
+          DriveBase.odometry.resetPosition(trajectory[test[1]].getInitialPose(),
+              trajectory[test[1]].getInitialPose().getRotation());
+        }
+        break;
+      case 1:
+        DriveBase.runTraj(trajectory[test[1]], timer.get());
+        if (timer.get() > trajectory[test[1]].getTotalTimeSeconds()) {
+          currentStep++;
+          timer.reset();
+          timer.start();
+        }
+        break;
+    }
   }
-}
 }

@@ -37,6 +37,7 @@ public class TestEngine {
 
     public static void loop(){
         AutoSelected = choo.getSelected();
+        DriveBase.updateODO();
         switch(AutoSelected){
             case "nothing":
             tim.start();
