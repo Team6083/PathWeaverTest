@@ -5,5 +5,5 @@
   "maxAcceleration": 1.0,
   "trackWidth": 0.7,
   "gameName": "Rapid React",
-  "outputDir": "../src/main/java/frc/robot/component"
+  "outputDir": "../src/main/deploy"
 }
