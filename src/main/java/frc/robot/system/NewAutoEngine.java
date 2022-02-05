@@ -17,11 +17,11 @@ public class NewAutoEngine {
   static int currentStep = 0;
   static int trajectoryAmount = 2;
   static int[] test = { 0, 1 };
-  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/test1.wpilib.json",
-      "/home/lvuser/deploy/output/test2.wpilib.json" };
-  static String[] trajectorySIM = {
-      "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\test1.wpilib.json",
-      "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\test2.wpilib.json" };
+  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/circle.wpilib.json",
+      "/home/lvuser/deploy/output/circle 2.wpilib.json" };
+  // static String[] trajectorySIM = {
+  //     "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\circle.wpilib.json",
+  //     "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\circle 2.wpilib.json" };
   static Trajectory[] trajectory = new Trajectory[trajectoryAmount];
 
   protected static Timer timer = new Timer();
@@ -33,18 +33,17 @@ public class NewAutoEngine {
   public static void init() {
     chooser = new SendableChooser<String>();
     chooserSetting();
-    // drive = new DifferentialDrive(leftmotor, rightmotor);
     for (int i = 0; i < trajectoryAmount; i++) {
       try {
-        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectorySIM[i]);
+        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON[i]);
         trajectory[i] = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       } catch (IOException ex) {
-        DriverStation.reportError("Unable to open trajectory: " + trajectorySIM, ex.getStackTrace());
+        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       }
 
       var pose = trajectory[i].getInitialPose();
 
-      DriveBase.setODOPose(pose);// This function has define
+      DriveBase.setODOPose(pose);
     }
   }
 
