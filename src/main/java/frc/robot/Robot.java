@@ -4,14 +4,11 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.component.DriveBase;
 import frc.robot.component.VisionTracking;
 import frc.robot.system.NewAutoEngine;
-import frc.robot.system.TestEngine;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,7 +35,6 @@ public class Robot extends TimedRobot {
     vicecontrol = new Xbox(1);
     DriveBase.init();
     VisionTracking.init();
-    // TestEngine.init();
     NewAutoEngine.init();
   }
 
@@ -54,11 +50,14 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     NewAutoEngine.loop();
-    // TestEngine.loop();
+  
+  
   }
 
   @Override
   public void teleopInit() {
+    DriveBase.resetEnc();
+    DriveBase.resetGyro();
   }
 
   @Override

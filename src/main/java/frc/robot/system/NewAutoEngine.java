@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -15,10 +16,11 @@ import frc.robot.component.DriveBase;
 public class NewAutoEngine {
 
   static int currentStep = 0;
-  static int trajectoryAmount = 2;
+  static int trajectoryAmount = 4;
   static int[] test = { 0, 1 };
-  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/circle.wpilib.json",
-      "/home/lvuser/deploy/output/circle 2.wpilib.json" };
+  static int[] testII={ 2, 3 };
+  static String[] trajectoryJSON = { "/home/lvuser/deploy/output/test 1.wpilib.json", "/home/lvuser/deploy/output/test 2.wpilib.json",
+  "/home/lvuser/deploy/output/test 3.wpilib.json","/home/lvuser/deploy/output/test 4.wpilib.json" };
   // static String[] trajectorySIM = {
   //     "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\circle.wpilib.json",
   //     "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest-3\\src\\main\\deploy\\output\\circle 2.wpilib.json" };
@@ -28,6 +30,7 @@ public class NewAutoEngine {
   protected static SendableChooser<String> chooser;
   protected static String autoSelected;
   protected static final String Test = "Test";
+  protected static final String TestII = "TestII";
   protected static final String kDoNothing = "Do Nothing";
 
   public static void init() {
@@ -48,6 +51,8 @@ public class NewAutoEngine {
   }
 
   public static void start() {
+    DriveBase.resetEnc();
+    DriveBase.resetGyro();
     DriveBase.resetFilters();
     DriveBase.resetPIDs();
     autoSelected = chooser.getSelected();
@@ -58,7 +63,8 @@ public class NewAutoEngine {
 
   public static void loop() {
     DriveBase.updateODO();
-
+    DriveBase.putDashboard();
+    SmartDashboard.putNumber("Time", timer.get());
     switch (autoSelected) {
       case Test:
         DoTest();
@@ -66,12 +72,16 @@ public class NewAutoEngine {
       case kDoNothing:
         DriveBase.directControl(0, 0);
         break;
+      case  TestII:
+        DoTestII();
+        break;
     }
   }
 
   private static void chooserSetting() {
     chooser.setDefaultOption("Do Nothing", kDoNothing);
     chooser.addOption("test", Test);
+    chooser.addOption("testII",TestII);
     SmartDashboard.putData("Auto Choice", chooser);
   }
 
@@ -90,6 +100,29 @@ public class NewAutoEngine {
       case 1:
         DriveBase.runTraj(trajectory[test[1]], timer.get());
         if (timer.get() > trajectory[test[1]].getTotalTimeSeconds()) {
+          currentStep++;
+          timer.reset();
+          timer.start();
+        }
+        break;
+    }
+  }
+
+  public static void DoTestII() {
+    switch (currentStep) {
+      case 0:
+        DriveBase.runTraj(trajectory[testII[0]], timer.get());
+        if (timer.get() > trajectory[testII[0]].getTotalTimeSeconds()) {
+          currentStep++;
+          timer.reset();
+          timer.start();
+          DriveBase.odometry.resetPosition(trajectory[testII[1]].getInitialPose(),
+              trajectory[testII[1]].getInitialPose().getRotation());
+        }
+        break;
+      case 1:
+        DriveBase.runTraj(trajectory[testII[1]], timer.get());
+        if (timer.get() > trajectory[testII[1]].getTotalTimeSeconds()) {
           currentStep++;
           timer.reset();
           timer.start();

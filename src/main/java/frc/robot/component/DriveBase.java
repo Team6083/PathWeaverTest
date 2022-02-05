@@ -5,9 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -119,7 +117,6 @@ public class DriveBase {
         // define gryo ID
         gyro = new AHRS(SPI.Port.kMXP);// gyro need to add class in order to fit to our library, which means that it
                                        // need a extre function to keep it work and Override it
-        gyro.reset();
 
         //int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
         //gyroSimDouble = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
@@ -138,8 +135,12 @@ public class DriveBase {
         drive.tankDrive(-Robot.maincontrol.getLeftY()/2, Robot.maincontrol.getRightY()/2);// the "tank Drive" allow driver to
                                                                                      // control drivebase motors with
                                                                                      // two Asix,
+        if(Robot.maincontrol.getXButton()){
+            gyro.reset();
+        }
         // left YAsix and right YAxis, which are relate to different side of the
         // motors. Then, the output of the motor is base on the Axis's number
+        
     }
 
     // This is for Limelight Visiontracking
@@ -183,9 +184,10 @@ public class DriveBase {
         double rightVolt = rightPID.calculate(r_filter.calculate(rightencoder.getRate()));
 
         leftMotor1.setVoltage(leftVolt);
-        //leftMotor2.setVoltage(leftVolt);
         rightMotor1.setVoltage(rightVolt);
-        //rightMotor2.setVoltage(rightVolt);
+        SmartDashboard.putNumber("leftVolt", leftVolt);
+        SmartDashboard.putNumber("rightVolt", rightVolt);
+        
 
         //m_driveSim.setInputs(leftVolt, rightVolt);
 
@@ -207,6 +209,15 @@ public class DriveBase {
         r_filter.reset();
     }
 
+    public static void resetEnc(){
+        rightencoder.reset();
+        leftencoder.reset();
+    }
+
+    public static void resetGyro(){
+        gyro.reset();
+    }
+
     public static void updateODO() {
         var gyroAngle = Rotation2d.fromDegrees(-gyro.getAngle());
         odometry.update(gyroAngle, leftencoder.getDistance(), rightencoder.getDistance());
@@ -222,6 +233,7 @@ public class DriveBase {
 
         leftPID.setPID(kP, kI, kD);
         rightPID.setPID(kP, kI, kD);
+        drive.feed();
     }
 
     public static void setODOPose(Pose2d pose) {
@@ -232,6 +244,7 @@ public class DriveBase {
     public static void putDashboard() {
         SmartDashboard.putNumber("LeftEncoder", leftencoder.get());
         SmartDashboard.putNumber("RightEncoder", rightencoder.get());
+        SmartDashboard.putNumber("gyro", gyro.getAngle());
     }
 
     // simulation
