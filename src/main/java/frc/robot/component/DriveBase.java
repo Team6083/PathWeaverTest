@@ -5,11 +5,11 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -68,13 +68,12 @@ public class DriveBase {
     protected static Field2d trajField = new Field2d();
 
     // For PID
-    private static double kP = 0.68;
-    private static double kI = 0.3;
+    private static double kP = 9.4876;
+    private static double kI = 0;
     private static double kD = 0;
 
-    // filter to smooth the wave, not very important
-    protected static LinearFilter l_filter = LinearFilter.singlePoleIIR(0.1, 0.02);
-    protected static LinearFilter r_filter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    // Feedforward Controller
+    protected static SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(1, 3);
 
     // PIDController
     protected static PIDController leftPID = new PIDController(kP, kI, kD);
@@ -97,6 +96,7 @@ public class DriveBase {
 
         leftmotor = new MotorControllerGroup(leftMotor1, leftMotor1);
         rightmotor = new MotorControllerGroup(rightMotor1, rightMotor1);
+        rightmotor.setInverted(true);
         drive = new DifferentialDrive(leftmotor, rightmotor);// define which motor we need to
                                                              // use in drivebasse
 
@@ -131,7 +131,7 @@ public class DriveBase {
 
         putDashboard();
 
-        drive.tankDrive(-Robot.maincontrol.getLeftY() / 2, Robot.maincontrol.getRightY() / 2);
+        drive.tankDrive(-Robot.maincontrol.getLeftY() / 2, -Robot.maincontrol.getRightY() / 2);
         // the "tank Drive" allow driver to control drivebase motors with two Axis,
         // left YAxis and right YAxis, which are relate to different side of the motors.
         // Then, the output of the motor is base on the Axis's number
@@ -171,20 +171,21 @@ public class DriveBase {
         Trajectory.State goal = trajectory.sample(timeInSec);
         trajField.setRobotPose(goal.poseMeters);
 
-        var chaspeed = ramseteController.calculate(odometry.getPoseMeters(), goal);
+        var currentPose = odometry.getPoseMeters();
+
+        var chaspeed = ramseteController.calculate(currentPose, goal);
 
         var wheelSpeeds = kinematic.toWheelSpeeds(chaspeed); // left right speed
         double left = wheelSpeeds.leftMetersPerSecond; // catch sppe from wheelSpeed(with ctrl+left mice)
         double right = wheelSpeeds.rightMetersPerSecond;
 
-        leftPID.setSetpoint(left);
-        rightPID.setSetpoint(right);
+        double leftVolt = leftPID.calculate(leftencoder.getRate(), left) + feedforward.calculate(left);
+        double rightVolt = rightPID.calculate(rightencoder.getRate(), right) + feedforward.calculate(right);
 
-        double leftVolt = leftPID.calculate(l_filter.calculate(leftencoder.getRate()));
-        double rightVolt = rightPID.calculate(r_filter.calculate(rightencoder.getRate()));
+        leftmotor.setVoltage(leftVolt);
+        rightmotor.setVoltage(rightVolt);
+        drive.feed();
 
-        leftMotor1.setVoltage(leftVolt);
-        rightMotor1.setVoltage(rightVolt);
         SmartDashboard.putNumber("leftVolt", leftVolt);
         SmartDashboard.putNumber("rightVolt", rightVolt);
 
@@ -193,6 +194,12 @@ public class DriveBase {
         SmartDashboard.putNumber("left_error", leftPID.getPositionError());
         SmartDashboard.putNumber("right_error", rightPID.getPositionError());
         SmartDashboard.putNumber("velocity", goal.velocityMetersPerSecond);
+
+        SmartDashboard.putNumber("chaspeedX", chaspeed.vxMetersPerSecond);
+        SmartDashboard.putNumber("chaspeedY", chaspeed.vyMetersPerSecond);
+
+        SmartDashboard.putNumber("errPosX", currentPose.minus(goal.poseMeters).getX());
+        SmartDashboard.putNumber("errPosY", currentPose.minus(goal.poseMeters).getY());
 
         // m_driveSim.setInputs(leftVolt, rightVolt);//for simulation
     }
@@ -230,11 +237,6 @@ public class DriveBase {
     public static void resetPIDs() {
         leftPID.reset();
         rightPID.reset();
-    }
-
-    public static void resetFilters() {
-        l_filter.reset();
-        r_filter.reset();
     }
 
     public static void resetEnc() {

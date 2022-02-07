@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     vicecontrol = new XboxController(1);
     DriveBase.init();
     VisionTracking.init();
-  //  NewAutoEngine.init();
+    NewAutoEngine.init();
   }
 
   @Override
@@ -43,12 +43,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-   // NewAutoEngine.start();
+   NewAutoEngine.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    //NewAutoEngine.loop();
+    NewAutoEngine.loop();
   }
 
   @Override
