@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.component.DriveBase;
 import frc.robot.component.VisionTracking;
 import frc.robot.system.NewAutoEngine;
@@ -25,17 +25,16 @@ public class Robot extends TimedRobot {
    * for any
    * initialization code.
    */
-  public static Xbox maincontrol;
-  public static Xbox vicecontrol;
+  public static XboxController maincontrol;
+  public static XboxController vicecontrol;
 
-  
   @Override
   public void robotInit() {
-    maincontrol = new Xbox(0);
-    vicecontrol = new Xbox(1);
+    maincontrol = new XboxController(0);
+    vicecontrol = new XboxController(1);
     DriveBase.init();
     VisionTracking.init();
-    NewAutoEngine.init();
+  //  NewAutoEngine.init();
   }
 
   @Override
@@ -44,20 +43,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    NewAutoEngine.start();
+   // NewAutoEngine.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    NewAutoEngine.loop();
-  
-  
+    //NewAutoEngine.loop();
   }
 
   @Override
   public void teleopInit() {
-    DriveBase.resetEnc();
-    DriveBase.resetGyro();
   }
 
   @Override
@@ -80,9 +75,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-
-  // @Override
-  // public void simulationPeriodic() {
-  //   DriveBase.simLoop();
-  // }
 }

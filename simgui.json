@@ -16,6 +16,16 @@
       }
     },
     "Other Devices": {
+      "Victor SPX[11]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Victor SPX[13]": {
+        "header": {
+          "open": true
+        }
+      },
       "navX-Sensor[0]": {
         "header": {
           "open": true

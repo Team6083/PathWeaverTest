@@ -4,19 +4,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-//import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-// import edu.wpi.first.wpilibj.simulation.EncoderSim;
-// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
-// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
-// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
-// import edu.wpi.first.hal.SimDouble;
-// import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,28 +20,43 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 
-public class DriveBase {
-    // basis drivebase
-    public static DifferentialDrive drive;// use to simpied drivebase program
-    public static WPI_VictorSPX leftMotor1;// define four motor
-    //public static WPI_VictorSPX leftMotor2;
-    public static WPI_VictorSPX rightMotor1;
-    //public static WPI_VictorSPX rightMotor2;
-    public static final int Lm1 = 11;// motorControler ID
-    //public static final int Lm2 = 1;
-    public static final int Rm1 = 13;
-    //public static final int Rm2 = 0;
+//for simulation
+// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+// import edu.wpi.first.wpilibj.simulation.EncoderSim;
+// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
+// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
+// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
+// import edu.wpi.first.hal.SimDouble;
+// import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+// import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.RobotController;
 
-    // for auto pathweaver
+public class DriveBase {
+
+    // port
+    private static final int Lm1 = 11;// motorControler ID
+    private static final int Rm1 = 13;
+    private static final int Re1 = 2;// Encoder ID
+    private static final int Re2 = 3;
+    private static final int Le1 = 0;
+    private static final int Le2 = 1;
+
+    // basis drivebase
+    public static WPI_VictorSPX leftMotor1;// define motor
+    public static WPI_VictorSPX rightMotor1;
+    public static MotorControllerGroup leftmotor;
+    public static MotorControllerGroup rightmotor;
+    public static DifferentialDrive drive;// use to simpied drivebase program
+
+    // sensor
     public static Encoder leftencoder;// to calculate how long we walk, we'll define how long a "1" is below
     public static Encoder rightencoder;
-
-    //private static EncoderSim leftEncoderSim, rightEncoderSim;
-
     // Gyro: need install Library
     public static AHRS gyro; // to detect the current angle, and design which angle we want to match, then
                              // calculate to match the goal
-    //private static SimDouble gyroSimDouble;
+
+    // private static EncoderSim leftEncoderSim, rightEncoderSim;//for simulation
+    // private static SimDouble gyroSimDouble;//for simulation
 
     // For dashboard
     public static DifferentialDriveOdometry odometry;// use to show path
@@ -74,40 +80,30 @@ public class DriveBase {
     protected static PIDController leftPID = new PIDController(kP, kI, kD);
     protected static PIDController rightPID = new PIDController(kP, kI, kD);
 
-    public static MotorControllerGroup leftmotor;
-    public static MotorControllerGroup rightmotor;
-
-    // Sim Drivebase
-    // private static DifferentialDrivetrainSim m_driveSim = DifferentialDrivetrainSim.createKitbotSim(
-    //         KitbotMotor.kDualCIMPerSide,
-    //         KitbotGearing.k10p71, // 10.71:1
-    //         KitbotWheelSize.kSixInch, // 6" diameter wheels.
-    //         null // No measurement noise.
+    // Sim Drivebase, for simulation
+    // private static DifferentialDrivetrainSim m_driveSim =
+    // DifferentialDrivetrainSim.createKitbotSim(
+    // KitbotMotor.kDualCIMPerSide,
+    // KitbotGearing.k10p71, // 10.71:1
+    // KitbotWheelSize.kSixInch, // 6" diameter wheels.
+    // null // No measurement noise.
     // );
 
     public static void init() {
         leftMotor1 = new WPI_VictorSPX(Lm1);// add ID into MotorControler
-        //leftMotor2 = new WPI_VictorSPX(Lm2);
         rightMotor1 = new WPI_VictorSPX(Rm1);
-        //rightMotor2 = new WPI_VictorSPX(Rm2);
+        rightencoder = new Encoder(Re1, Re2);// add ID into Encoder
+        leftencoder = new Encoder(Le1, Le2);
 
         leftmotor = new MotorControllerGroup(leftMotor1, leftMotor1);
         rightmotor = new MotorControllerGroup(rightMotor1, rightMotor1);
-
-
-
         drive = new DifferentialDrive(leftmotor, rightmotor);// define which motor we need to
                                                              // use in drivebasse
 
-        // set up encoder ID
-        rightencoder = new Encoder(2,3);
-        leftencoder = new Encoder(0, 1);
-    
         leftencoder.reset();
         rightencoder.reset();
-
-        //leftEncoderSim = new EncoderSim(leftencoder);
-        //rightEncoderSim = new EncoderSim(rightencoder);
+        // leftEncoderSim = new EncoderSim(leftencoder);//for simulation
+        // rightEncoderSim = new EncoderSim(rightencoder);//for simulation
 
         // set up encoder distance: "2*PI*Units.inchesToMeters(wheel inch)/730(two
         // circulation)"
@@ -118,29 +114,30 @@ public class DriveBase {
         gyro = new AHRS(SPI.Port.kMXP);// gyro need to add class in order to fit to our library, which means that it
                                        // need a extre function to keep it work and Override it
 
-        //int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
-        //gyroSimDouble = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
+        // int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");//for
+        // simulation
+        // gyroSimDouble = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev,
+        // "Yaw"));//for simulation
 
         // For smartDashboard to take number and path which call back from pathWeaver
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(0));
         SmartDashboard.putData("field", field);
         SmartDashboard.putData("trajField", trajField);
     }
-    // Here comes some function to control robot
 
+    // Here comes some function to control robot
     // normal drivebase
     public static void teleop() {
+
         putDashboard();
-        
-        drive.tankDrive(-Robot.maincontrol.getLeftY()/2, Robot.maincontrol.getRightY()/2);// the "tank Drive" allow driver to
-                                                                                     // control drivebase motors with
-                                                                                     // two Asix,
-        if(Robot.maincontrol.getXButton()){
+
+        drive.tankDrive(-Robot.maincontrol.getLeftY() / 2, Robot.maincontrol.getRightY() / 2);
+        // the "tank Drive" allow driver to control drivebase motors with two Axis,
+        // left YAxis and right YAxis, which are relate to different side of the motors.
+        // Then, the output of the motor is base on the Axis's number
+        if (Robot.maincontrol.getXButton()) {
             gyro.reset();
         }
-        // left YAsix and right YAxis, which are relate to different side of the
-        // motors. Then, the output of the motor is base on the Axis's number
-        
     }
 
     // This is for Limelight Visiontracking
@@ -160,11 +157,14 @@ public class DriveBase {
                                      // tow number which are use to control both side. For instance, the
                                      // EncoderWalker will output two number in order to control the motor of right
                                      // and left.
+        // also, we can use it to control just only one side, it will be correct if the
+        // number is legal.
 
-        //m_driveSim.setInputs(leftMotor1.get() * RobotController.getBatteryVoltage(),
-                //rightMotor1.get() * RobotController.getBatteryVoltage());
-    }// also, we can use it to control just only one side, it will be correct if the
-     // number is legal.
+        // m_driveSim.setInputs(leftMotor1.get() *
+        // RobotController.getBatteryVoltage(),//for simulation
+        // rightMotor1.get() * RobotController.getBatteryVoltage());//for simulation
+
+    }
 
     // Use to run Trajectory(path)
     public static void runTraj(Trajectory trajectory, double timeInSec) {
@@ -187,35 +187,14 @@ public class DriveBase {
         rightMotor1.setVoltage(rightVolt);
         SmartDashboard.putNumber("leftVolt", leftVolt);
         SmartDashboard.putNumber("rightVolt", rightVolt);
-        
-
-        //m_driveSim.setInputs(leftVolt, rightVolt);
 
         SmartDashboard.putNumber("left", left);
         SmartDashboard.putNumber("right", right);
         SmartDashboard.putNumber("left_error", leftPID.getPositionError());
         SmartDashboard.putNumber("right_error", rightPID.getPositionError());
         SmartDashboard.putNumber("velocity", goal.velocityMetersPerSecond);
-    }
 
-    // here comes some mode to set up or update
-    public static void resetPIDs() {
-        leftPID.reset();
-        rightPID.reset();
-    }
-
-    public static void resetFilters() {
-        l_filter.reset();
-        r_filter.reset();
-    }
-
-    public static void resetEnc(){
-        rightencoder.reset();
-        leftencoder.reset();
-    }
-
-    public static void resetGyro(){
-        gyro.reset();
+        // m_driveSim.setInputs(leftVolt, rightVolt);//for simulation
     }
 
     public static void updateODO() {
@@ -247,16 +226,36 @@ public class DriveBase {
         SmartDashboard.putNumber("gyro", gyro.getAngle());
     }
 
-    // simulation
-    // public static void simLoop() {
-    //     if (DriverStation.isEnabled()) {
-    //         m_driveSim.update(0.02);
+    // here comes some mode to set up or update
+    public static void resetPIDs() {
+        leftPID.reset();
+        rightPID.reset();
+    }
 
-    //         leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
-    //         leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
-    //         rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
-    //         rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-    //         gyroSimDouble.set(-m_driveSim.getHeading().getDegrees());
-    //     }
+    public static void resetFilters() {
+        l_filter.reset();
+        r_filter.reset();
+    }
+
+    public static void resetEnc() {
+        rightencoder.reset();
+        leftencoder.reset();
+    }
+
+    public static void resetGyro() {
+        gyro.reset();
+    }
+
+    // for simulation
+    // public static void simLoop() {
+    // if (DriverStation.isEnabled()) {
+    // m_driveSim.update(0.02);
+
+    // leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
+    // leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
+    // rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
+    // rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
+    // gyroSimDouble.set(-m_driveSim.getHeading().getDegrees());
+    // }
     // }
 }
