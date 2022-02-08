@@ -15,30 +15,26 @@ import frc.robot.component.DriveBase;
 public class NewAutoEngine {
 
   static int currentStep = 0;
-  static int trajectoryAmount = 6;
+  static int trajectoryAmount = 9;
   static int[] test = { 0, 1 };
   static int[] testII = { 2, 3 };
-  static int[] testIII = { 4, 5 };
+  static int[] testcircle = { 4, 5 };
+  static int[] tarmac1 = { 6, 7 ,8};
   static String[] trajectoryJSON = {
       "/home/lvuser/deploy/output/test 1.wpilib.json", "/home/lvuser/deploy/output/test 2.wpilib.json",
       "/home/lvuser/deploy/output/test 3.wpilib.json", "/home/lvuser/deploy/output/test 4.wpilib.json",
-      "/home/lvuser/deploy/output/test 5.wpilib.json", "/home/lvuser/deploy/output/test 6.wpilib.json"
-  };
+      "/home/lvuser/deploy/output/circle.wpilib.json", "/home/lvuser/deploy/output/circle 2.wpilib.json",
+      "/home/lvuser/deploy/output/tarmac1-1.wpilib.json","/home/lvuser/deploy/output/tarmac1-2.wpilib.json",
+      "/home/lvuser/deploy/output/tarmac1-3.wpilib.json"};
 
   // //for simulation
   // static String[] trajectorySIM = {
-  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test
-  // 1.wpilib.json",
-  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test
-  // 2.wpilib.json",
-  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test
-  // 3.wpilib.json",
-  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test
-  // 4.wpilib.json",
-  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test
-  // 5.wpilib.json",
-  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test
-  // 6.wpilib.json"};
+  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test 1.wpilib.json",
+  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test 2.wpilib.json",
+  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test 3.wpilib.json",
+  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test 4.wpilib.json",
+  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test 5.wpilib.json",
+  // "C:\\Users\\Apple\\Desktop\\FRC\\PathWeaverTest\\src\\main\\deploy\\output\\test 6.wpilib.json"};
 
   static Trajectory[] trajectory = new Trajectory[trajectoryAmount];
 
@@ -47,7 +43,8 @@ public class NewAutoEngine {
   protected static String autoSelected;
   protected static final String Test = "Test";
   protected static final String TestII = "TestII";
-  protected static final String TestIII = "TestIII";
+  protected static final String Testcircle = "Testcircle";
+  protected static final String Tarmac1 = "Tarmac1";
   protected static final String kDoNothing = "Do Nothing";
 
   public static void init() {
@@ -96,8 +93,11 @@ public class NewAutoEngine {
       case TestII:
         DoTestII();
         break;
-      case TestIII:
-        DoTestIII();
+      case Testcircle:
+        DoTestcircle();
+        break;
+      case Tarmac1:
+        Dotarmac1();
         break;
     }
   }
@@ -106,7 +106,8 @@ public class NewAutoEngine {
     chooser.setDefaultOption("Do Nothing", kDoNothing);
     chooser.addOption("test", Test);
     chooser.addOption("testII", TestII);
-    chooser.addOption("testIII", TestIII);
+    chooser.addOption("testcircle", Testcircle);
+    chooser.addOption("tarmac1", Tarmac1);
     SmartDashboard.putData("Auto Choice", chooser);
   }
 
@@ -178,34 +179,69 @@ public class NewAutoEngine {
     }
   }
 
-  public static void DoTestIII() {
+  public static void DoTestcircle() {
     switch (currentStep) {
       case 0:// Initialize robot position
         currentStep++;
         timer.reset();
         timer.start();
-        DriveBase.odometry.resetPosition(trajectory[testIII[0]].getInitialPose(),
-            trajectory[testIII[0]].getInitialPose().getRotation());
+        DriveBase.odometry.resetPosition(trajectory[testcircle[0]].getInitialPose(),
+            trajectory[testcircle[0]].getInitialPose().getRotation());
         DriveBase.resetEnc();
         break;
       case 1:
-        DriveBase.runTraj(trajectory[testIII[0]], timer.get());
-        if (timer.get() > trajectory[testIII[0]].getTotalTimeSeconds()) {
+        DriveBase.runTraj(trajectory[testcircle[0]], timer.get());
+        if (timer.get() > trajectory[testcircle[0]].getTotalTimeSeconds()) {
           currentStep++;
           timer.reset();
           timer.start();
-          DriveBase.odometry.resetPosition(trajectory[testIII[1]].getInitialPose(),
-              trajectory[testIII[1]].getInitialPose().getRotation());
+          DriveBase.odometry.resetPosition(trajectory[testcircle[1]].getInitialPose(),
+              trajectory[testcircle[1]].getInitialPose().getRotation());
         DriveBase.resetEnc();
         }
         break;
       case 2:
-        DriveBase.runTraj(trajectory[testIII[1]], timer.get());
-        if (timer.get() > trajectory[testIII[1]].getTotalTimeSeconds()) {
+        DriveBase.runTraj(trajectory[testcircle[1]], timer.get());
+        if (timer.get() > trajectory[testcircle[1]].getTotalTimeSeconds()) {
           currentStep++;
           timer.reset();
           timer.start();
         }
+        break;
+    }
+  }
+  public static void Dotarmac1() {
+    switch (currentStep) {
+      case 0:// Initialize robot position
+        currentStep++;
+        timer.reset();
+        timer.start();
+        DriveBase.odometry.resetPosition(trajectory[tarmac1[0]].getInitialPose(),
+            trajectory[tarmac1[0]].getInitialPose().getRotation());
+        DriveBase.resetEnc();
+        break;
+      case 1:
+        DriveBase.runTraj(trajectory[tarmac1[0]], timer.get());
+        if (timer.get() > trajectory[tarmac1[0]].getTotalTimeSeconds()) {
+          currentStep++;
+          timer.reset();
+          timer.start();
+          DriveBase.odometry.resetPosition(trajectory[tarmac1[1]].getInitialPose(),
+              trajectory[tarmac1[1]].getInitialPose().getRotation());
+          DriveBase.resetEnc();
+        }
+        break;
+      case 2:
+        DriveBase.runTraj(trajectory[tarmac1[1]], timer.get());
+        if (timer.get() > trajectory[tarmac1[1]].getTotalTimeSeconds()) {
+          DriveBase.directControl(0, 0);
+          currentStep++;
+          timer.reset();
+          timer.start();
+        }
+        break;
+      default://not very necessary
+        DriveBase.directControl(0, 0);
         break;
     }
   }

@@ -1,6 +1,6 @@
 {
   "SysId": {
-    "Analysis Type": "Drivetrain",
+    "Analysis Type": "General Mechanism",
     "AnalyzerJSONLocation": "C:\\Users\\Apple\\Desktop\\FRC\\id_result\\sysid_data20220207-160937.json",
     "NetworkTables Settings": {
       "serverTeam": "6083"

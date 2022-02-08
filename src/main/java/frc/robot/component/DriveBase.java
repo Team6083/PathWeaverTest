@@ -93,13 +93,15 @@ public class DriveBase {
         rightMotor1 = new WPI_VictorSPX(Rm1);
         rightencoder = new Encoder(Re1, Re2);// add ID into Encoder
         leftencoder = new Encoder(Le1, Le2);
+        // define gryo ID
+        gyro = new AHRS(SPI.Port.kMXP);// gyro need to add class in order to fit to our library, which means that it
+                                       // need a extre function to keep it work and Override it
 
         leftmotor = new MotorControllerGroup(leftMotor1, leftMotor1);
         rightmotor = new MotorControllerGroup(rightMotor1, rightMotor1);
         rightmotor.setInverted(true);
         drive = new DifferentialDrive(leftmotor, rightmotor);// define which motor we need to
                                                              // use in drivebasse
-
         leftencoder.reset();
         rightencoder.reset();
         // leftEncoderSim = new EncoderSim(leftencoder);//for simulation
@@ -110,10 +112,7 @@ public class DriveBase {
         leftencoder.setDistancePerPulse(2 * Math.PI * Units.inchesToMeters(6) / 730); // 365*2
         rightencoder.setDistancePerPulse(2 * Math.PI * Units.inchesToMeters(6) / 730);
         rightencoder.setReverseDirection(true);
-        // define gryo ID
-        gyro = new AHRS(SPI.Port.kMXP);// gyro need to add class in order to fit to our library, which means that it
-                                       // need a extre function to keep it work and Override it
-
+        
         // int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");//for
         // simulation
         // gyroSimDouble = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev,
